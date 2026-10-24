@@ -1,0 +1,20 @@
+[Unit]
+Description=Encrypted private-chat backup and isolated restore verification
+RequiresMountsFor=/storage
+After=private-chat.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /opt/private-chat/ops/backup.py
+Nice=15
+IOSchedulingClass=idle
+ProtectSystem=strict
+ReadWritePaths=/storage/private-chat-backups /etc/private-chat
+PrivateTmp=true
+PrivateDevices=true
+NoNewPrivileges=true
+RestrictAddressFamilies=AF_UNIX
+UMask=0077
+MemoryMax=256M
+CPUQuota=25%
+TimeoutStartSec=600

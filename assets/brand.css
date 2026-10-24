@@ -1,0 +1,13 @@
+/* Private, single-user deployment; keep the upstream application's UI intact. */
+:root{--banas-accent:#9d8cf2;--banas-round:18px}
+html{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;scroll-behavior:smooth}
+html.dark body{background:#15161a}
+html.dark #sidebar{background:#101115!important;border-right:1px solid #ffffff0b}
+html:not(.dark) #sidebar{background:#f6f5fa!important;border-right:1px solid #e8e5ef}
+#sidebar{padding-top:max(6px,env(safe-area-inset-top))}
+textarea{line-height:1.6!important}
+button:focus-visible,a:focus-visible,textarea:focus-visible,input:focus-visible{outline:2px solid var(--banas-accent)!important;outline-offset:3px}
+::selection{background:#9d8cf244}
+pre{border:1px solid #8882;border-radius:14px!important}
+@media(max-width:640px){textarea{font-size:16px!important}button{touch-action:manipulation}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation-duration:.01ms!important;transition-duration:.01ms!important}}

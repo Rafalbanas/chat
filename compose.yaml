@@ -1,0 +1,128 @@
+# Loopback-only private chat. Exact image digest and required secrets come from /etc/private-chat/app.env.
+name: banas-private-chat
+services:
+  webui:
+    image: ${OPEN_WEBUI_IMAGE:?Set a pinned Open WebUI image}
+    user: ${APP_UID:?Set dedicated UID}:${APP_GID:?Set dedicated GID}
+    network_mode: host
+    restart: unless-stopped
+    cap_drop:
+    - ALL
+    security_opt:
+    - no-new-privileges:true
+    environment:
+      HOST: 127.0.0.1
+      PORT: ${WEBUI_PORT:?Audit and set a free loopback port}
+      HOME: /tmp
+      DATA_DIR: /app/backend/data
+      WEBUI_URL: https://chat.banas.dev
+      WEBUI_AUTH: 'true'
+      WEBUI_SECRET_KEY: ${WEBUI_SECRET_KEY:?Generate a unique secret}
+      WEBUI_ADMIN_EMAIL: ${WEBUI_ADMIN_EMAIL:-}
+      WEBUI_ADMIN_PASSWORD: ${WEBUI_ADMIN_PASSWORD:-}
+      WEBUI_ADMIN_NAME: Rafał
+      ENABLE_SIGNUP: 'false'
+      ENABLE_INITIAL_ADMIN_SIGNUP: 'false'
+      DEFAULT_USER_ROLE: pending
+      ENABLE_PERSISTENT_CONFIG: 'true'
+      ENABLE_LOGIN_FORM: 'true'
+      ENABLE_MFA: 'true'
+      MFA_ALLOW_OAUTH_BYPASS: 'false'
+      MFA_ALLOW_TRUSTED_HEADER_BYPASS: 'false'
+      WEBUI_SESSION_COOKIE_SECURE: 'true'
+      WEBUI_SESSION_COOKIE_SAME_SITE: strict
+      WEBUI_AUTH_COOKIE_SECURE: 'true'
+      WEBUI_AUTH_COOKIE_SAME_SITE: strict
+      JWT_EXPIRES_IN: 12h
+      ENABLE_API_KEYS: 'false'
+      ENABLE_DIRECT_CONNECTIONS: 'false'
+      ENABLE_DIRECT_INTEGRATIONS: 'false'
+      ENABLE_OPENAI_API: 'false'
+      ENABLE_OLLAMA_API: 'true'
+      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:?Audit the existing private tunnel}
+      DEFAULT_MODELS: qwen3.5:9b
+      DEFAULT_LOCALE: pl-PL
+      ENABLE_EVALUATION_ARENA_MODELS: 'false'
+      ENABLE_COMMUNITY_SHARING: 'false'
+      ENABLE_MESSAGE_RATING: 'false'
+      ENABLE_TITLE_GENERATION: 'false'
+      ENABLE_TAGS_GENERATION: 'false'
+      ENABLE_FOLLOW_UP_GENERATION: 'false'
+      ENABLE_AUTOCOMPLETE_GENERATION: 'false'
+      ENABLE_VERSION_UPDATE_CHECK: 'false'
+      ENABLE_DB_MIGRATIONS: 'true'
+      AUDIT_LOG_LEVEL: NONE
+      GLOBAL_LOG_LEVEL: WARNING
+      UVICORN_LOG_LEVEL: warning
+      LOGURU_DIAGNOSE: 'false'
+      DO_NOT_TRACK: 'true'
+      ANONYMIZED_TELEMETRY: 'false'
+      SCARF_NO_ANALYTICS: 'true'
+      WEBUI_NAME: Banas Chat
+      STATIC_DIR: /app/backend/data/static
+      CORS_ALLOW_ORIGIN: https://chat.banas.dev
+      FORWARDED_ALLOW_IPS: 127.0.0.1
+      ENABLE_OPENAI_API_PASSTHROUGH: 'false'
+      ENABLE_PLUGINS: 'false'
+      ENABLE_PIP_INSTALL_FRONTMATTER_REQUIREMENTS: 'false'
+      ENABLE_CODE_EXECUTION: 'false'
+      ENABLE_CODE_INTERPRETER: 'false'
+      OFFLINE_MODE: 'true'
+      ENABLE_PASSWORD_VALIDATION: 'true'
+    volumes:
+    - /var/lib/private-chat/data:/app/backend/data
+    healthcheck:
+      test:
+      - CMD
+      - python
+      - -c
+      - import os,urllib.request; urllib.request.urlopen('http://127.0.0.1:'+os.environ['PORT']+'/health',
+        timeout=5)
+      interval: 30s
+      timeout: 8s
+      retries: 5
+      start_period: 120s
+    logging: &id001
+      driver: json-file
+      options:
+        max-size: 5m
+        max-file: '3'
+    mem_limit: 1100m
+    mem_reservation: 384m
+    cpus: 1.0
+    pids_limit: 200
+    depends_on:
+      gateway:
+        condition: service_healthy
+  gateway:
+    image: ${OPEN_WEBUI_IMAGE:?Set a pinned Open WebUI image}
+    user: ${APP_UID:?Set dedicated UID}:${APP_GID:?Set dedicated GID}
+    network_mode: host
+    entrypoint:
+    - python
+    - /policy/gateway.py
+    restart: unless-stopped
+    read_only: true
+    cap_drop:
+    - ALL
+    security_opt:
+    - no-new-privileges:true
+    environment:
+      OLLAMA_UPSTREAM: http://127.0.0.1:11434
+      GPU_STATUS_FILE: /run/private-chat/gpu.json
+    volumes:
+    - ./config/gateway.py:/policy/gateway.py:ro
+    - /run/private-chat:/run/private-chat:ro
+    mem_limit: 128m
+    cpus: 0.3
+    pids_limit: 32
+    healthcheck:
+      test:
+      - CMD
+      - python
+      - -c
+      - import urllib.request; urllib.request.urlopen('http://127.0.0.1:18085/health',timeout=3)
+      interval: 15s
+      timeout: 5s
+      retries: 3
+    logging: *id001

@@ -1,0 +1,11 @@
+[Unit]
+Description=Daily encrypted private-chat backup
+
+[Timer]
+OnCalendar=*-*-* 04:35:00 Europe/Warsaw
+RandomizedDelaySec=10m
+Persistent=true
+Unit=private-chat-backup.service
+
+[Install]
+WantedBy=timers.target
