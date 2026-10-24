@@ -1,23 +1,30 @@
 # Pochodzenie komponentów i licencje
 
-Projekt utrzymuje Rafał Banaś. Własny kod integracyjny, konfiguracja wdrożenia,
-testy, ikona SVG i style zostały przygotowane dla tego projektu przy wsparciu
-OpenAI Codex. Nie przypisujemy sobie autorstwa interfejsu ani backendu Open WebUI.
-Nazwa Banas Chat oznacza to konkretne wdrożenie i warstwę integracji.
+**Aplikacja czatu to Open WebUI autorstwa Open WebUI Inc., Timothy Jaeryang Baek
+i współtwórców.** Z tego projektu pochodzą interfejs, backend, logowanie, MFA,
+historia, renderowanie Markdown, obsługa modeli i eksport.
+
+Rafał Banaś określił wymagania i utrzymuje wdrożenie. Dodatkowe skrypty integracyjne,
+konfigurację, testy, ikonę SVG, style i dokumentację wygenerowano i dostosowano
+z pomocą OpenAI Codex. Nie przedstawiamy tych prac jako samodzielnego napisania
+aplikacji czatu przez właściciela repozytorium. Nazwa Banas Chat oznacza konkretne
+wdrożenie Open WebUI.
 
 ## Co pochodzi z tego repozytorium
 
 | Pliki | Zakres |
 | --- | --- |
-| `config/gateway.py` | Własna bramka do Ollamy: limity, priorytet CV Tailora, osobne thinking, wyładowywanie modeli |
-| `ops/gpu_status.py` | Własny odczyt metadanych zajętości CV Tailora |
-| `ops/backup.py` | Własna orkiestracja kopii SQLite i plików, szyfrowania GPG oraz testowego odtworzenia |
-| `ops/install.py`, `ops/configure_*.py`, `ops/enable_*.py` | Własne skrypty instalacji i konfiguracji; korzystają z publicznych API i narzędzi systemowych |
+| `config/gateway.py` | Dodatkowa bramka do Ollamy: limity, priorytet CV Tailora, osobne thinking, wyładowywanie modeli |
+| `ops/gpu_status.py` | Dodatkowy odczyt metadanych zajętości CV Tailora |
+| `ops/backup.py` | Orkiestracja kopii SQLite i plików, szyfrowania GPG oraz testowego odtworzenia |
+| `ops/install.py`, `ops/configure_*.py`, `ops/enable_*.py` | Skrypty instalacji i konfiguracji; korzystają z publicznych API i narzędzi systemowych |
 | `compose.yaml`, `config/*.service`, `config/*.timer`, `config/*.conf` | Konfiguracja integrująca istniejące usługi i obraz upstream |
-| `assets/icon.svg`, `assets/brand.css` | Własna ikona i uzupełniające style; nie zawierają logo OpenAI ani skopiowanych assetów Open WebUI |
-| `tests/`, skrypty akceptacyjne w `ops/` | Własne testy bramki i wdrożenia |
+| `assets/icon.svg`, `assets/brand.css` | Dodatkowa ikona i style; nie zawierają logo OpenAI ani skopiowanych assetów Open WebUI |
+| `tests/`, skrypty akceptacyjne w `ops/` | Testy bramki i wdrożenia |
 
-Oryginalne materiały tego repozytorium udostępniamy na [licencji MIT](LICENSE).
+Licencja [MIT](LICENSE) obejmuje wyłącznie materiały dodane w tym repozytorium,
+w zakresie praw, które jego utrzymujący może udostępnić. Nie jest deklaracją
+autorstwa całej aplikacji ani samodzielnego napisania dodatków bez pomocy AI.
 MIT nie zastępuje licencji poniższych projektów, modeli, obrazów kontenerów
 ani tekstów licencji w katalogu `licenses/`.
 

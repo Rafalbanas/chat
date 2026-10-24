@@ -1,10 +1,16 @@
-# Banas Chat — prywatny czat z Ollamą
+# Banas Chat — konfiguracja wdrożenia Open WebUI
 
-> Repozytorium zawiera własną warstwę integracji i konfigurację gotowego Open WebUI.
-> Interfejs, logowanie, MFA i historia pochodzą z Open WebUI Inc. i jego współtwórców.
-> [Pochodzenie komponentów i warunki użycia](THIRD_PARTY_NOTICES.md) · [MIT dla własnego kodu](LICENSE).
+> **Aplikacją czatu jest gotowe [Open WebUI](https://github.com/open-webui/open-webui).**
+> Jej autorami są Open WebUI Inc., Timothy Jaeryang Baek i współtwórcy projektu.
+> To repozytorium dokumentuje konfigurację konkretnego wdrożenia oraz dodatkowe skrypty.
+> [Pochodzenie komponentów i warunki użycia](THIRD_PARTY_NOTICES.md) · [MIT wyłącznie dla dodatków tego repo](LICENSE).
 
-Projekt przygotowany dla Rafała Banasia przy wsparciu OpenAI Codex.
+Rafał Banaś określił wymagania i utrzymuje wdrożenie. Dodatkowe skrypty,
+konfiguracja i dokumentacja zostały wygenerowane i dostosowane z pomocą OpenAI Codex.
+Interfejs, backend, konta, MFA, historia, Markdown i eksport są funkcjami Open WebUI;
+nie zostały napisane od zera w tym projekcie. MIT tego repozytorium nie zmienia
+licencji Open WebUI ani nie przypisuje nam jego autorstwa.
+
 To konfiguracja konkretnego wdrożenia, nie uniwersalny instalator: przed użyciem
 na swoim serwerze dostosuj domenę, konta, porty, katalogi, certyfikaty i źródło
 metadanych CV Tailora. Skrypty akceptacyjne w `ops/` powstały podczas bootstrapu
